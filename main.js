@@ -4,7 +4,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   // --- CÀI ĐẶT ---
-  const API_URL = 'http://localhost:3000'; // Địa chỉ API server thật của bạn
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+  console.log("API đang kết nối tới:", API_URL);
   const searchBox = document.getElementById('search-box');
   const statusDiv = document.getElementById('status');
   const hitsContainer = document.getElementById('hits-container');
