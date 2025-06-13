@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
     li.className = 'has-submenu';
     li.dataset.menuType = menuType;
     li.dataset.pageSlug = pageSlug;
-    li.innerHTML = `<a href="/${pageSlug}">${name}</a>`; 
+    li.innerHTML = `<a href="#">${name}</a>`;
 
     const megaMenuDiv = document.createElement('div');
     megaMenuDiv.className = 'mega-menu';
@@ -330,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
       li.dataset.menuType = menuType; // << Gán menuType vào dataset
       li.dataset.pageSlug = pageSlug; // << Thêm pageSlug để đồng bộ với mega menu
   
-      li.innerHTML = `<a href="/${pageSlug}">${name}</a>`; 
+      li.innerHTML = `<a href="#">${name}</a>`;
       const simpleMenuDiv = document.createElement('div');
       simpleMenuDiv.className = 'simple-menu';
       const contentWrapper = document.createElement('div');

@@ -411,7 +411,7 @@ body {
 /* --- Cấu trúc Menu chính --- */
 .main-nav ul { display: flex; list-style: none; padding: 0; margin: 0; height: 100%; }
 .main-nav li { position: relative; display: flex; align-items: center; height: 100%; }
-.main-nav > ul > li > a { display: flex; align-items: center; gap: 6px; padding: 0 1.5rem; height: 100%; text-decoration: none; color: #555; font-weight: 500; transition: color 0.2s; }
+.main-nav > ul > li > a { display: flex; align-items: center; gap: 6px; padding: 0 1.5rem; height: 100%; text-decoration: none; color: #555; font-weight: 500; transition: color 0.2s, background-color 0.2s; }
 .main-nav .has-submenu > a::after { content: '▼'; font-size: 0.6em; margin-top: 2px; transition: transform 0.2s ease-in-out; }
 
   /* --- Mega Menu --- */
@@ -732,11 +732,14 @@ body {
   }
   .main-nav > ul#main-menu-list {
   display: flex;
-align-items: center;
+  align-items: center;
     height: 100%;
     margin: auto;
   }
-  
+  .main-nav > ul > li > a:hover {
+  background-color: #f0f2f5; /* Một màu xám rất nhạt làm nền */
+  color: var(--primary-color); /* Đổi màu chữ thành màu xanh lá chính */
+}
 
 }
 @media (max-width: 768px) {
