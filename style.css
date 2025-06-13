@@ -54,6 +54,7 @@ body {
   right: 1rem;
   top: 50%;
   transform: translateY(-50%);
+  z-index: 102;
 }
 .search-button {
   background: none;
@@ -953,8 +954,23 @@ align-items: center;
   cursor: not-allowed;
   border-color: var(--border-color);
 }
+@media (max-width: 480px) {
+  
+  /* Chuyển form tìm kiếm sang bố cục dọc */
+  .search-form {
+    flex-direction: column; /* Chuyển từ hàng ngang sang hàng dọc */
+    gap: 0.75rem; /* Có thể giảm khoảng cách một chút cho phù hợp */
+  }
 
-
+  /* (Tùy chọn nhưng khuyến khích) 
+     Làm cho nút bấm chiếm toàn bộ chiều rộng để dễ nhấn hơn trên mobile */
+  .search-form button {
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-size: 1.1rem;
+  }
+}
 
 /* Màu cho các loại Badge */
 .badge-PROJECT { background-color: #198754; } /* Xanh lá cây đậm */

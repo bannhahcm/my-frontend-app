@@ -42,14 +42,51 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
+
+  function openMobileMenu() {
+      const mainNav = document.getElementById('main-nav');
+      const menuOverlay = document.getElementById('menu-overlay');
+      if (!mainNav || !menuOverlay) return;
+      mainNav.classList.add('is-open');
+      menuOverlay.classList.add('is-visible');
+      document.body.style.overflow = 'hidden';
+      }
+  function closeMobileMenu() {
+        const mainNav = document.getElementById('main-nav');
+        const menuOverlay = document.getElementById('menu-overlay');
+        const slider = mainNav ? mainNav.querySelector('.menu-slider') : null;
+        if (!mainNav || !menuOverlay) return;
+        mainNav.classList.remove('is-open');
+        menuOverlay.classList.remove('is-visible');
+        document.body.style.overflow = '';
+        if (slider) {
+          setTimeout(() => {
+            slider.style.transition = 'none';
+            const panels = slider.querySelectorAll('.menu-panel');
+            for (let i = 1; i < panels.length; i++) {
+              panels[i].remove();
+            }
+            slider.style.width = `100%`;
+            slider.style.transform = `translateX(0%)`;
+            setTimeout(() => slider.style.transition = '', 50);
+          }, 350);
+        }
+      }
+
   // --- PHẦN 2: LOGIC XỬ LÝ MENU ĐỘNG ---
   function handleMenuInteractions() {
-
-    //buildMainMenu(initialMenuData);
-    mainNav.appendChild(mainMenuList); // Gắn lại <ul> vào <nav>
+    const mainNav = document.getElementById('main-nav');
+    const mainMenuList = document.getElementById('main-menu-list');
+    const hamburgerButton = document.getElementById('hamburger-button');
     const menuOverlay = document.getElementById('menu-overlay');
-    if (!mainNav || !mainMenuList || !hamburgerButton || !menuOverlay) return;
-
+    if (!mainNav || !mainMenuList || !hamburgerButton || !menuOverlay) {
+    console.error("Thiếu một trong các phần tử menu cần thiết (nav, list, hamburger, overlay).");
+    return;
+    }
+    if (!mainNav.contains(mainMenuList)) {
+      mainNav.appendChild(mainMenuList);
+    }
+    
     // Sử dụng if/else để đảm bảo chỉ một khối code được thực thi.
     if (window.innerWidth > 1024) {
       // --- LOGIC HOVER CHO DESKTOP ---
@@ -74,48 +111,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
     } else {
-      // --- LOGIC MENU DRILL-DOWN CHO MOBILE ---
-      const slider = document.createElement('div');
-      slider.className = 'menu-slider';
-      const initialPanel = document.createElement('div');
-      initialPanel.className = 'menu-panel';
-      initialPanel.dataset.level = 0;
-      initialPanel.innerHTML = `<div class="panel-header"><h4 class="panel-title">Menu</h4></div>`;
-      const initialList = document.createElement('ul');
-      initialList.className = 'panel-list';
-      initialList.innerHTML = mainMenuList.innerHTML;
-      initialPanel.appendChild(initialList);
-      slider.appendChild(initialPanel);
+       if (!mainNav.querySelector('.menu-slider')) {
+        const slider = document.createElement('div');
+        slider.className = 'menu-slider';
+        const initialPanel = document.createElement('div');
+        initialPanel.className = 'menu-panel';
+        initialPanel.dataset.level = 0;
+        initialPanel.innerHTML = `<div class="panel-header"><h4 class="panel-title">Menu</h4></div>`;
+        const initialList = document.createElement('ul');
+        initialList.className = 'panel-list';
+        initialList.innerHTML = mainMenuList.innerHTML;
+        initialPanel.appendChild(initialList);
+        slider.appendChild(initialPanel);
+        mainNav.appendChild(slider); // và thay bằng slider
+       }
+       hamburgerButton.addEventListener('click', () => mainNav.classList.contains('is-open') ? closeMobileMenu() : openMobileMenu());
+        menuOverlay.addEventListener('click', closeMobileMenu);
+      
+      
+      
 
    
-      mainNav.appendChild(slider); // và thay bằng slider
-
-      function openMobileMenu() {
-        mainNav.classList.add('is-open');
-        menuOverlay.classList.add('is-visible');
-        document.body.style.overflow = 'hidden';
-      }
-
-      function closeMobileMenu() {
-        mainNav.classList.remove('is-open');
-        menuOverlay.classList.remove('is-visible');
-        document.body.style.overflow = '';
-        setTimeout(() => {
-          slider.style.transition = 'none';
-          const panels = slider.querySelectorAll('.menu-panel');
-          for (let i = 1; i < panels.length; i++) {
-            panels[i].remove();
-          }
-          slider.style.width = `100%`;
-          slider.style.transform = `translateX(0%)`;
-          setTimeout(() => slider.style.transition = '', 50);
-        }, 350);
-      }
-
-      hamburgerButton.addEventListener('click', () => mainNav.classList.contains('is-open') ? closeMobileMenu() : openMobileMenu());
-      menuOverlay.addEventListener('click', closeMobileMenu);
       
-      // FIX 2: SỬA LẠI LOGIC NÚT BACK VÀ CÁC NÚT KHÁC
+
+    
+      const slider = mainNav.querySelector('.menu-slider');
+      
       slider.addEventListener('click', async (event) => {
         const targetLink = event.target.closest('a');
         if (!targetLink) return;
@@ -429,6 +450,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- PHẦN 3: LOGIC CHO TÌM KIẾM VÀ TRANG KẾT QUẢ ---
 
   function showPopup() {
+    const mainNav = document.getElementById('main-nav');
+    if (mainNav && mainNav.classList.contains('is-open')) {
+        closeMobileMenu();
+    }
     searchPopup.style.display = 'flex';
     popupSearchInput.focus();
     renderSearchHistory(); // Render lịch sử
@@ -922,12 +947,23 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('resize', debounce(() => {
     console.log('Cửa sổ thay đổi kích thước, đang cài đặt lại menu...');
 
-    // Dọn dẹp các sự kiện và cấu trúc cũ có thể còn sót lại
-    // Bằng cách reset menu về trạng thái HTML gốc
-    mainNav.innerHTML = ''; // Xóa sạch mọi thứ bên trong <nav>
-    mainMenuList.innerHTML = builtMenuHTML; // Phục hồi lại cấu trúc <ul> gốc
-    
-    // Chạy lại logic cài đặt menu để nó nhận diện kích thước mới
+    // --- PHẦN RESET MENU ĐƯỢC CẢI TIẾN ---
+    const mainNav = document.getElementById('main-nav');
+    if (mainNav) {
+      // 1. Xóa sạch nội dung cũ bên trong <nav>
+      mainNav.innerHTML = ''; 
+
+      // 2. Tạo một phần tử <ul> hoàn toàn mới
+      const newMenuList = document.createElement('ul');
+      newMenuList.id = 'main-menu-list'; // Gán lại ID cho nó
+      newMenuList.innerHTML = builtMenuHTML; // Đổ nội dung HTML gốc đã lưu vào
+
+      // 3. Gắn phần tử <ul> mới này vào trong <nav>
+      mainNav.appendChild(newMenuList);
+    }
+    // ------------------------------------
+
+    // Chạy lại logic cài đặt menu trên cấu trúc HTML đã được reset sạch sẽ
     handleMenuInteractions();
 }, 250));
 
