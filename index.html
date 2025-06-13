@@ -7,20 +7,24 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
+    <div id="menu-overlay" class="menu-overlay"></div> 
+     
     <header class="main-header">
       <div class="header-container">
-        <div class="logo">BDS<span>Demo</span></div>
-        <nav class="main-nav">
-          <a href="#">Dự án</a>
-          <a href="#">Mua bán</a>
-          <a href="#">Cho thuê</a>
-          <a href="#">Wiki</a>
-          <a href="#">Tin tức</a>
-          <a href="#">Doanh nghiệp</a>
-        </nav>
-        <button id="header-search-button" class="search-button">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <button id="hamburger-button" class="hamburger-button">
+           <span></span><span></span><span></span>
         </button>
+        <div class="logo">BDS<span>Demo</span></div>
+      
+        <div class="header-actions">
+          <button id="header-search-button" class="search-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </button>
+        </div>
+        <nav id="main-nav" class="main-nav">
+          <ul id="main-menu-list">
+          </ul>
+        </nav>
       </div>
     </header>
 
@@ -31,52 +35,20 @@
           <input type="search" id="popup-search-input" placeholder="Tìm kiếm dự án, khu vực, ví dụ: Aqua City" autocomplete="off">
           <button type="submit">Tìm kiếm</button>
         </form>
-        <div id="search-suggestions-container" class="search-suggestions-container">
-          </div>
+
+        <div id="search-suggestions-container" class="search-suggestions-container"></div>
+
+    <div id="search-extra-suggestions" class="search-extra-suggestions">
+      <div id="history-suggestions" class="suggestions-section">
+        </div>
+      <div id="popular-suggestions" class="suggestions-section">
+        </div>
+    </div>
       </div>
     </div>
 
-    <main id="main-content" class="main-content">
-      <div id="search-results-page" class="search-results-page">
-        <div class="results-header">
-          <h1>Kết quả tìm kiếm cho: "<span id="search-term"></span>"</h1>
-          <p><span id="results-count"></span> kết quả được tìm thấy.</p>
-        </div>
-
-        <div class="results-controls">
-          <div id="result-tabs" class="result-tabs">
-            <button class="tab-button active" data-type="all">Tất cả</button>
-            <button class="tab-button" data-type="PROJECT">Dự án</button>
-            <button class="tab-button" data-type="PRODUCT">Mua bán/Cho thuê</button>
-            <button class="tab-button" data-type="NEWS_ARTICLE">Tin tức</button>
-          </div>
-          <div class="result-filters">
-            <select id="filter-location">
-              <option value="">Tất cả khu vực</option>
-              <option value="quan-tan-phu">Quận Tân Phú</option>
-              <option value="quan-7">Quận 7</option>
-            </select>
-            <select id="filter-price">
-              <option value="">Tất cả mức giá</option>
-              <option value="0-3">Dưới 3 tỷ</option>
-              <option value="3-5">Từ 3 - 5 tỷ</option>
-              <option value="5+">Trên 5 tỷ</option>
-            </select>
-            <select id="sort-by">
-              <option value="relevance">Liên quan nhất</option>
-              <option value="newest">Mới nhất</option>
-            </select>
-          </div>
-        </div>
-        
-        <div id="no-results-message" class="no-results-message" style="display: none;">
-          <p>Rất tiếc, không tìm thấy kết quả nào phù hợp.</p>
-          <p>Hãy thử với từ khóa khác hoặc duyệt qua các danh mục của chúng tôi.</p>
-        </div>
-
-        <div id="results-list" class="results-list">
-          </div>
-      </div>
+    <main id="main-content">
+      <div id="search-results-page" class="search-results-page" style="display: none;"></div>
     </main>
 
     <script type="module" src="/main.js"></script>
